@@ -5,9 +5,9 @@
 
 class Knn {
 public:
-    int k, num_classes;
+    int k;
 
-    Knn(int, int);
+    explicit Knn(int);
 
-    void fit(Dataset &);
+    void fit(Dataset &) const;
 };

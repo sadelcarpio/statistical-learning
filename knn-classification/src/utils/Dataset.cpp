@@ -1,15 +1,7 @@
-#include <iostream>
 #include <sstream>
 #include "Dataset.hpp"
 #include "ArrayUtils.hpp"
 #include "CsvReader.hpp"
-
-Dataset::Dataset(std::vector<std::vector<double>> X, std::vector<int> Y, int n) {
-    this->X = X;
-    this->Y = Y;
-    this->n = n;
-    this->n_classes = ArrayUtils::getNClasses(Y, n);
-}
 
 Dataset::Dataset(std::string &data) {
     std::vector<std::vector<std::string>> csv_data = CsvReader::readCsvFile(data);
