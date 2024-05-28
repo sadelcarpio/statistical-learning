@@ -1,4 +1,3 @@
-#include <cmath>
 #include <vector>
 #include <unordered_set>
 #include "ArrayUtils.hpp"
@@ -19,5 +18,5 @@ double ArrayUtils::squaredEuclideanDist(std::vector<double> x1, std::vector<doub
         double diff = x2[i] - x1[i];
         sum += diff * diff;
     }
-    return std::sqrt(sum);
+    return sum;
 }
