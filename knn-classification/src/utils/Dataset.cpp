@@ -1,35 +1,25 @@
-#include <sstream>
 #include "Dataset.hpp"
 #include "ArrayUtils.hpp"
 #include "CsvReader.hpp"
 
-Dataset::Dataset(std::string &data) {
+Dataset::Dataset(std::string &data): n_classes(0), n(0), p(0) {
     std::vector<std::vector<std::string>> csv_data = CsvReader::readCsvFile(data);
-    std::vector<std::vector<double>> X;
-    std::vector<int> Y;
-    int n = csv_data.size();
-    int p = csv_data[0].size() - 1;
+    processCsvData(csv_data);
+}
 
-    for (int i = 0; i < n; i++) {
-        std::vector<std::string> row = csv_data[i];
+void Dataset::processCsvData(const std::vector<std::vector<std::string>>& csv_data) {
+    n = static_cast<int>(csv_data.size());
+    p = static_cast<int>(csv_data[0].size() - 1);
+    for (const auto& row : csv_data) {
         std::vector<double> x;
-        for (int j = 0; j < row.size(); j++) {
-            std::stringstream ss(row[j]);
+        for (size_t j = 0; j < row.size(); j++) {
             if (j == p) {
-                int label;
-                ss >> label;
-                Y.push_back(label);
+                Y.push_back(std::stoi(row[j]));
             } else {
-                double value;
-                ss >> value;
-                x.push_back(value);
+                x.push_back(std::stod(row[j]));
             }
         }
         X.push_back(x);
     }
-    this->X = X;
-    this->Y = Y;
-    this->n_classes = ArrayUtils::getNClasses(Y, n);
-    this->n = n;
-    this->p = p;
+    n_classes = ArrayUtils::getNClasses(Y, n);
 }

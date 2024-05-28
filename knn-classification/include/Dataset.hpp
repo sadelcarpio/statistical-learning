@@ -4,6 +4,9 @@
 #include <string>
 
 class Dataset {
+private:
+    void processCsvData(const std::vector<std::vector<std::string>> &csv_data);
+
 public:
     std::vector<std::vector<double>> X;
     std::vector<int> Y;
