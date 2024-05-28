@@ -10,10 +10,10 @@ int ArrayUtils::getNClasses(std::vector<int> arr, int n) {
             unique_elements.insert(arr[i]);
         }
     }
-    return unique_elements.size();
+    return static_cast<int>(unique_elements.size());
 }
 
-double ArrayUtils::euclideanDistance(std::vector<double> x1, std::vector<double> x2, int dimensions) {
+double ArrayUtils::squaredEuclideanDist(std::vector<double> x1, std::vector<double> x2, int dimensions) {
     double sum = 0;
     for (int i = 0; i < dimensions; i++) {
         double diff = x2[i] - x1[i];

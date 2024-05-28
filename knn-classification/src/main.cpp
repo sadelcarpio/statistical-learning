@@ -11,6 +11,11 @@ int main(int argc, char const *argv[]) {
     std::cout << "Number of features: " << dataset->p << std::endl;
     Knn knn(5);
     knn.fit(*dataset);
+    std::vector<std::vector<double>> X_test = {{-1, -1}, {10, 10}};
+    auto labels = knn.predict(X_test);
+    for (auto &label: labels) {
+        std::cout << "Label for test point: " << label << std::endl;
+    }
     delete dataset;
     return 0;
 }
