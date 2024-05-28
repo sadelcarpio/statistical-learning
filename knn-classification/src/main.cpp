@@ -4,8 +4,7 @@
 #include "ArrayUtils.hpp"
 #include "Dataset.hpp"
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
     std::cout << "KNN Algorithm Demo." << std::endl;
     std::string filename = "data/dummy_data.csv";
     Dataset *dataset = new Dataset(filename);

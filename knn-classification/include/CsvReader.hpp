@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 
-class CsvReader
-{
+class CsvReader {
 public:
-    static std::vector<std::vector<std::string>> readCsvFile(const std::string& filename);
+    static std::vector<std::vector<std::string>> readCsvFile(const std::string &filename);
 };
