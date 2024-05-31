@@ -15,7 +15,8 @@ int main(int argc, char const *argv[]) {
     KnnRegressor knn_reg(3);
     knn_reg.fit(*reg_dataset);
 
-    std::vector<std::vector<double>> X_test = {{5.5, 5.5}, {4.4, 3.4}};
+    std::vector<std::vector<double>> X_test = {{5.5, 5.5},
+                                               {4.4, 3.4}};
     auto predictions = knn_reg.predict(X_test);
     for (const auto &pred: predictions) {
         std::cout << "Prediction for test point: " << pred << std::endl;
@@ -29,7 +30,8 @@ int main(int argc, char const *argv[]) {
     KnnClassifier knn_clf(5);
     knn_clf.fit(*clf_dataset);
 
-    X_test = {{-1, -1}, {10, 10}};
+    X_test = {{-1, -1},
+              {10, 10}};
     auto labels = knn_clf.predict(X_test);
     for (const auto &label: labels) {
         std::cout << "Label for test point: " << label << std::endl;

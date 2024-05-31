@@ -2,7 +2,7 @@
 #include "ArrayUtils.hpp"
 #include "CsvReader.hpp"
 
-ClassificationDataset::ClassificationDataset(std::string &data) : Dataset(data), n_classes(0){
+ClassificationDataset::ClassificationDataset(std::string &data) : Dataset(data), n_classes(0) {
     std::vector<std::vector<std::string>> csv_data = CsvReader::readCsvFile(data);
     processCsvData(csv_data);
 }
