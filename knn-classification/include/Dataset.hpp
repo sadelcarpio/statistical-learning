@@ -12,7 +12,6 @@ public:
     std::vector<T> Y;
     int n;
     int p;
-    std::vector<std::vector<std::string>> data;
 
     virtual ~Dataset() = default;
 

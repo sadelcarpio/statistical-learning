@@ -3,6 +3,11 @@
 
 class KnnRegressor : public Knn<double> {
 private:
+    /**
+     *
+     * @param distances vector of pairs of (index, distance) values
+     * @return The average of the responses (y values) of the K nearest neighbors.
+     */
     double getLabelKNeighbors(std::vector<std::pair<int, double>> &distances) const override;
 
 public:
