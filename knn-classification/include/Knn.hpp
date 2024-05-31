@@ -9,7 +9,7 @@
 template<typename TargetType>
 class Knn {
 protected:
-    const Dataset *dataset;
+    const Dataset<TargetType> *dataset;
 
     void getKNeighbors(std::vector<std::pair<int, double>> &distances,
                        const std::vector<double> &point, int index = -1) const {
@@ -31,7 +31,7 @@ public:
     explicit Knn(int k) : k(k), dataset(nullptr) {
     }
 
-    void fit(const Dataset &ds) {
+    void fit(const Dataset<TargetType> &ds) {
         this->dataset = &ds;
         for (int i = 0; i < ds.n; i++) {
             std::vector<double> point = ds.X[i];
