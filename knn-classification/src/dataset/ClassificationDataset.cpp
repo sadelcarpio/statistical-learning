@@ -3,14 +3,13 @@
 #include "CsvReader.hpp"
 
 ClassificationDataset::ClassificationDataset(std::string &data) : Dataset(data), n_classes(0) {
-    std::vector<std::vector<std::string>> csv_data = CsvReader::readCsvFile(data);
-    processCsvData(csv_data);
+    csv_data = std::make_unique<std::vector<std::vector<std::string>>>(CsvReader::readCsvFile(data));
 }
 
-void ClassificationDataset::processCsvData(const std::vector<std::vector<std::string>> &csv_data) {
-    n = static_cast<int>(csv_data.size());
-    p = static_cast<int>(csv_data[0].size() - 1);
-    for (const auto &row: csv_data) {
+void ClassificationDataset::processCsvData() {
+    n = static_cast<int>(csv_data->size());
+    p = static_cast<int>((*csv_data)[0].size() - 1);
+    for (const auto &row: *csv_data) {
         std::vector<double> x;
         for (size_t j = 0; j < row.size(); j++) {
             if (j == p) {

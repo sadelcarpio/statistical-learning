@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     std::string filename = "data/dummy_data_regression.csv";
     std::unique_ptr<RegressionDataset> reg_dataset = std::make_unique<RegressionDataset>(filename);
     std::cout << "Regression: number of features: " << reg_dataset->p << std::endl;
-
+    reg_dataset->processCsvData();
     KnnRegressor knn_reg(3);
     knn_reg.fit(*reg_dataset);
 
@@ -24,6 +24,7 @@ int main(int argc, char const *argv[]) {
 
     filename = "data/dummy_data_classification.csv";
     std::unique_ptr<ClassificationDataset> clf_dataset = std::make_unique<ClassificationDataset>(filename);
+    clf_dataset->processCsvData();
     std::cout << "Classification: number of classes: " << clf_dataset->n_classes << std::endl;
     std::cout << "Classification: number of features: " << clf_dataset->p << std::endl;
 
