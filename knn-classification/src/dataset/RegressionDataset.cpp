@@ -9,7 +9,7 @@ RegressionDataset::RegressionDataset(std::string &data) : Dataset(data) {
 
 void RegressionDataset::processCsvData() {
     n = static_cast<int>(csv_data->size());
-    p = static_cast<int>((*csv_data)[0].size() - 1);
+    p = static_cast<int>(csv_data->at(0).size() - 1);
     for (const auto &row: *csv_data) {
         std::vector<double> x;
         for (size_t j = 0; j < row.size(); j++) {
