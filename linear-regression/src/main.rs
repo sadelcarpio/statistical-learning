@@ -1,28 +1,20 @@
-use ndarray::prelude::*;
-use polars::prelude::*;
+mod dataset;
+mod algorithm;
 
-struct Dataset {
-    x: Arc<Array2<f32>>,
-    y: Arc<Array1<f32>>,
-}
+use dataset::Dataset;
+use algorithm::MultipleLinearRegression;
 
-impl Dataset {
-    fn new(x: Arc<Array2<f32>>, y: Arc<Array1<f32>>) -> Dataset {
-        Dataset { x, y }
-    }
-
-    fn from_csv(filename: &str) -> Dataset {
-        let df = CsvReadOptions::default().try_into_reader_with_file_path(Some(filename.into())).unwrap().finish().unwrap();
-        let p: usize = df.width() - 1;
-        let arr = df.to_ndarray::<Float32Type>(Default::default()).unwrap();
-        let x: Array2<f32> = arr.slice(s![.., ..p]).into_owned();
-        let y: Array1<f32> = arr.column(p).into_owned();
-        return Dataset { x: Arc::new(x), y: Arc::new(y) };
-    }
-}
 
 fn main() {
-    let dataset = Dataset::from_csv("data.csv");
-    println!("{:?}", dataset.y);
-    println!("{:?}", dataset.x);
+    let dataset = Dataset::from_csv("data.csv").unwrap();
+    let mut mlr = MultipleLinearRegression::new();
+    mlr.fit(&dataset);
+    match &mlr.params {
+        Some(params) => println!("Model parameters: {:?}", params),
+        None => println!("Model parameters have not been computed."),
+    }
+    let predictions = mlr.predict(&dataset.x);
+    println!("Predictions: {:?}", predictions);
+    let mse = mlr.evaluate(&dataset.x, &dataset.y).unwrap();
+    println!("MSE: {:?}", mse);
 }

@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 ndarray = "0.15.6"
-polars = { version = "0.40.0", features = ["ndarray", "csv"] }
+ndarray-linalg = { version = "0.16.0", features = ["intel-mkl-static"] }
+polars = { version = "0.40.0", features = ["ndarray"] }
