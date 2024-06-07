@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "exercises"
+version = "0.1.0"
+description = ""
+authors = ["sadelcarpio <sadelcarpioa@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+jupyter = "^1.0.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.0"
+statsmodels = "^0.14.2"
+islp = "^0.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
