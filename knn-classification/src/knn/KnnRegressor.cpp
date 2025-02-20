@@ -4,7 +4,7 @@
 double KnnRegressor::getLabelKNeighbors(std::vector<std::pair<int, double>> &distances) const {
     double final_label = 0;
     for (int index = 0; index < k; index++) {
-        double label = dataset->Y[distances[index].first];
+        const double label = dataset->Y[distances[index].first];
         final_label += label;
     }
     return final_label / k;

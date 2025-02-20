@@ -4,9 +4,9 @@
 #include <string>
 #include <memory>
 
-template<typename T>
-class Dataset {
-
+template <typename T>
+class Dataset
+{
 public:
     std::vector<std::vector<double>> X;
     std::vector<T> Y;
@@ -19,21 +19,25 @@ public:
     virtual void processCsvData() = 0;
 
 protected:
-    explicit Dataset(std::string &) : n(0), p(0) {};
+    explicit Dataset(std::string&) : n(0), p(0)
+    {
+    };
 };
 
-class RegressionDataset : public Dataset<double> {
+class RegressionDataset final : public Dataset<double>
+{
 public:
-    explicit RegressionDataset(std::string &);
+    explicit RegressionDataset(std::string&);
 
     void processCsvData() override;
 };
 
-class ClassificationDataset : public Dataset<int> {
+class ClassificationDataset final : public Dataset<int>
+{
 public:
     int n_classes;
 
-    explicit ClassificationDataset(std::string &);
+    explicit ClassificationDataset(std::string&);
 
     void processCsvData() override;
 };

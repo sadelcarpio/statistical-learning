@@ -6,10 +6,11 @@
 #include "Dataset.hpp"
 #include "ArrayUtils.hpp"
 
-template<typename TargetType>
-class Knn {
+template <typename TargetType>
+class Knn
+{
 protected:
-    const Dataset<TargetType> *dataset;
+    const Dataset<TargetType>* dataset;
 
     /**
      * Sorts the distances to a given data point in ascending order.
@@ -17,10 +18,13 @@ protected:
      * @param point Point where the distances will be calculates
      * @param index If using a point from the train dataset avoid calculating its own distance (0)
      */
-    void sortDistances(std::vector<std::pair<int, double>> &distances,
-                       const std::vector<double> &point, int index = -1) const {
-        for (int j = 0; j < dataset->n; j++) {
-            if (index != j) {
+    void sortDistances(std::vector<std::pair<int, double>>& distances,
+                       const std::vector<double>& point, const int index = -1) const
+    {
+        for (int j = 0; j < dataset->n; j++)
+        {
+            if (index != j)
+            {
                 std::vector<double> neighbor = dataset->X[j];
                 double distance = ArrayUtils::squaredEuclideanDist(point, neighbor, dataset->p);
                 distances.emplace_back(j, distance);
@@ -29,21 +33,25 @@ protected:
         std::sort(distances.begin(), distances.end(), [](auto a, auto b) { return a.second < b.second; });
     };
 
-    virtual TargetType getLabelKNeighbors(std::vector<std::pair<int, double>> &distances) const = 0;
+    virtual TargetType getLabelKNeighbors(std::vector<std::pair<int, double>>& distances) const = 0;
 
 public:
+    virtual ~Knn() = default;
     int k;
 
-    explicit Knn(int k) : k(k), dataset(nullptr) {
+    explicit Knn(const int k) : dataset(nullptr), k(k)
+    {
     }
 
     /**
      * Runs KNN on all data points from the training set
      * @param ds Dataset object. RegressionDataset for regression and ClassificationDataset for KNN Classification
      */
-    void fit(const Dataset<TargetType> &ds) {
+    void fit(const Dataset<TargetType>& ds)
+    {
         this->dataset = &ds;
-        for (int i = 0; i < ds.n; i++) {
+        for (int i = 0; i < ds.n; i++)
+        {
             std::vector<double> point = ds.X[i];
             std::vector<std::pair<int, double>> distances;
             sortDistances(distances, point, i);
@@ -57,9 +65,11 @@ public:
      * @param X vector of rows
      * @return Vector of predictions
      */
-    std::vector<TargetType> predict(const std::vector<std::vector<double>> &X) const {
+    std::vector<TargetType> predict(const std::vector<std::vector<double>>& X) const
+    {
         std::vector<TargetType> labels;
-        for (const std::vector<double> &x: X) {
+        for (const std::vector<double>& x : X)
+        {
             std::vector<std::pair<int, double>> distances;
             sortDistances(distances, x);
             TargetType label = getLabelKNeighbors(distances);
