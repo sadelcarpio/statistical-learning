@@ -15,6 +15,8 @@ public class Dataset {
 
     private final double[][] predictors;
     private final double[][] labels;
+    public int numClasses;
+    public int numPredictors;
 
     public double[][] getPredictors() {
         return predictors;
@@ -48,12 +50,12 @@ public class Dataset {
             labelSet.add(label);
         }
 
-        int numLabels = labelSet.size();
+        numClasses = labelSet.size();
 
         for (int i = 0; i < allData.size(); i++) {
             String[] row = allData.get(i);
             predictors[i] = new double[row.length - 1];
-            labels[i] = new double[numLabels];
+            labels[i] = new double[numClasses];
             for (int j = 0; j < row.length; j++) {
                 if ( j == row.length - 1) {
                     int label = Integer.parseInt(row[j]);
@@ -64,5 +66,6 @@ public class Dataset {
                 }
             }
         }
+        numPredictors = predictors[0].length;
     }
 }
