@@ -7,19 +7,20 @@ import com.opencsv.exceptions.CsvException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Dataset {
 
-    private final float[][] predictors;
-    private final float[] labels;
+    private final double[][] predictors;
+    private final double[][] labels;
 
-    public float[][] getPredictors() {
+    public double[][] getPredictors() {
         return predictors;
     }
 
-    public float[] getLabels() {
+    public double[][] getLabels() {
         return labels;
     }
 
@@ -38,15 +39,25 @@ public class Dataset {
             throw new RuntimeException(e);
         }
 
-        predictors = new float[allData.size()][];
-        labels = new float[allData.size()];
+        predictors = new double[allData.size()][];
+        labels = new double[allData.size()][];
+        Set<Integer> labelSet = new HashSet<>();
+
+        for (String[] row : allData) {
+            int label = Integer.parseInt(row[row.length - 1]);
+            labelSet.add(label);
+        }
+
+        int numLabels = labelSet.size();
 
         for (int i = 0; i < allData.size(); i++) {
             String[] row = allData.get(i);
-            predictors[i] = new float[row.length - 1];
+            predictors[i] = new double[row.length - 1];
+            labels[i] = new double[numLabels];
             for (int j = 0; j < row.length; j++) {
                 if ( j == row.length - 1) {
-                    labels[i] = Integer.parseInt(row[j]);
+                    int label = Integer.parseInt(row[j]);
+                    labels[i][label] = 1;
                 }
                 else {
                     predictors[i][j] = Float.parseFloat(row[j]);

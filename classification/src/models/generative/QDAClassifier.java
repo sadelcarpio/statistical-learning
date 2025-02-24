@@ -1,4 +1,4 @@
 package models.generative;
 
-public class QDAClassifier {
+public class QDAClassifier extends GenerativeClassifier {
 }

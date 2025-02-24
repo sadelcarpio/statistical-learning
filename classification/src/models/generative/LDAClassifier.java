@@ -1,4 +1,4 @@
 package models.generative;
 
-public class LDAClassifier {
+public class LDAClassifier extends GenerativeClassifier {
 }

@@ -1,29 +1,29 @@
 package models.generative;
 
 import data.Dataset;
+import metrics.Metric;
 import models.ClassificationModel;
+import org.ejml.simple.SimpleMatrix;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class GenerativeClassifier extends ClassificationModel {
-    @Override
     public void fit(Dataset dataset) {
 
     }
 
     @Override
-    public Map<String, Double> evaluate(Dataset dataset) {
+    public Map<String, Double> evaluate(Dataset dataset, Metric[] metrics) {
         return Map.of();
     }
 
     @Override
-    public ArrayList<Integer> predict(ArrayList<ArrayList<Float>> data) {
+    public double[][] predict(SimpleMatrix data) {
         return null;
     }
 
     @Override
-    public void log_odds() {
+    public void logOdds() {
 
     }
 }

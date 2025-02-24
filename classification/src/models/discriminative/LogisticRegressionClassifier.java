@@ -1,50 +1,57 @@
 package models.discriminative;
 
 import data.Dataset;
+import metrics.Metric;
 import models.ClassificationModel;
-import org.ejml.equation.Equation;
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class LogisticRegressionClassifier extends ClassificationModel {
 
     public SimpleMatrix beta;
 
-    @Override
+    public LogisticRegressionClassifier(int nClasses) {
+        this.nClasses = nClasses;
+    }
+
     public void fit(Dataset dataset) {
         SimpleMatrix predictorsMatrix = new SimpleMatrix(dataset.getPredictors());
         SimpleMatrix ones = new SimpleMatrix(predictorsMatrix.getNumRows(), 1);
         ones.fill(1);
         SimpleMatrix designMatrix = ones.concatColumns(predictorsMatrix);
-        beta = SimpleMatrix.random(designMatrix.getNumCols(), 1);
+        beta = SimpleMatrix.random(designMatrix.getNumCols(), nClasses);
         var yTrue = new SimpleMatrix(dataset.getLabels());
         optimize(designMatrix, yTrue);
     }
 
     private void optimize(SimpleMatrix designMatrix, SimpleMatrix yTrue) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             SimpleMatrix z = designMatrix.mult(beta);
-            SimpleMatrix prediction = z.elementExp().elementDiv(z.elementExp().plus(1)).elementLog();
-            double loss = -yTrue.elementMult(prediction).elementSum();
-            SimpleMatrix gradBeta = designMatrix.transpose().mult(prediction.minus(yTrue));
+            SimpleMatrix yHat = softMax(z);
+            double loss = -yTrue.elementMult(yHat.elementLog()).elementSum();
+            SimpleMatrix gradBeta = designMatrix.transpose().mult(yHat.minus(yTrue));
             beta = beta.minus(gradBeta.scale(0.01));
         }
     }
 
-    @Override
-    public Map<String, Double> evaluate(Dataset dataset) {
-        return Map.of();
+    private SimpleMatrix softMax(SimpleMatrix matrix) {
+        SimpleMatrix ones = new SimpleMatrix(matrix.getNumCols(), matrix.getNumCols());
+        ones.fill(1);
+        return matrix.elementExp().elementDiv(matrix.elementExp().mult(ones));
     }
 
     @Override
-    public ArrayList<Integer> predict(ArrayList<ArrayList<Float>> data) {
-        return null;
+    public double[][] predict(SimpleMatrix data) {
+        SimpleMatrix ones = new SimpleMatrix(data.getNumRows(), 1);
+        ones.fill(1);
+        SimpleMatrix designMatrix = ones.concatColumns(data);
+        SimpleMatrix z = designMatrix.mult(beta);
+        return softMax(z).toArray2();
     }
 
     @Override
-    public void log_odds() {
+    public void logOdds() {
 
     }
 }
