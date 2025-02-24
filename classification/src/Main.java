@@ -12,6 +12,6 @@ public class Main {
 //        Map<String, Double> metrics = classifier.evaluate(dataset, new Metric[]{new Accuracy()});
 //        System.out.println(metrics);
         GenerativeClassifier priorClf = new LDAClassifier(3);
-        priorClf.calculatePriors(dataset);
+        priorClf.calculatePriorsAndMeans(dataset.getLabels(), dataset.getPredictors());
     }
 }
