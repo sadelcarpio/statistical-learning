@@ -47,11 +47,13 @@ public class QDAClassifier extends GenerativeClassifier {
                 SimpleMatrix x = data.getRow(j);
                 SimpleMatrix quadTerm = x.mult(covMatrices[i].invert()).mult(x.transpose()).scale(-0.5);
                 SimpleMatrix predictorTerm = x.mult(covMatrices[i].invert()).mult(meanVector.transpose());
-                SimpleMatrix biasTerm = meanVector.mult(covMatrices[i].invert()).mult(meanVector.transpose()).scale(-0.5).plus(Math.log(priors[i]));
+                SimpleMatrix biasTerm = meanVector.mult(covMatrices[i].invert()).mult(meanVector.transpose())
+                        .scale(-0.5).plus(Math.log(covMatrices[i].determinant()) * -0.5).plus(Math.log(priors[i]));
                 SimpleMatrix score = quadTerm.plus(predictorTerm).plus(biasTerm);
                 scores.set(j, i, score.get(0, 0));
             }
         }
+        System.out.println(scores);
         return scores.toArray2();
     }
 }

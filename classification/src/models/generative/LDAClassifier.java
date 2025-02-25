@@ -24,6 +24,7 @@ public class LDAClassifier extends GenerativeClassifier {
                 scores.set(j, i, score.get(j));
             }
         }
+        System.out.println(scores);
         return scores.toArray2();
     }
 
