@@ -1,8 +1,8 @@
-package models.generative;
+package models.generative.parametric;
 
 import org.ejml.simple.SimpleMatrix;
 
-public class QDAClassifier extends GenerativeClassifier {
+public class QDAClassifier extends ParametricGenerativeClassifier {
 
     public SimpleMatrix[] covMatrices;
 

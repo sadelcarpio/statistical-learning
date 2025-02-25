@@ -1,17 +1,17 @@
-package models.generative;
+package models.generative.parametric;
 
 import data.Dataset;
 import models.ClassificationModel;
 import org.ejml.simple.SimpleMatrix;
 
-public abstract class GenerativeClassifier extends ClassificationModel {
+public abstract class ParametricGenerativeClassifier extends ClassificationModel {
 
     public double[] priors;
     public double[][] means;
     public double[] labelCount;
     public int nPredictors;
 
-    public GenerativeClassifier(int nClasses) {
+    public ParametricGenerativeClassifier(int nClasses) {
         priors = new double[nClasses];
         means = new double[nClasses][];
         this.nClasses = nClasses;

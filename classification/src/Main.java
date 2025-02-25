@@ -2,8 +2,8 @@ import data.Dataset;
 import metrics.Accuracy;
 import metrics.Metric;
 import models.discriminative.LogisticRegressionClassifier;
-import models.generative.LDAClassifier;
-import models.generative.QDAClassifier;
+import models.generative.parametric.LDAClassifier;
+import models.generative.parametric.QDAClassifier;
 
 import java.util.Arrays;
 import java.util.Map;

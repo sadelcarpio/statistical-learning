@@ -1,8 +1,8 @@
-package models.generative;
+package models.generative.parametric;
 
 import org.ejml.simple.SimpleMatrix;
 
-public class LDAClassifier extends GenerativeClassifier {
+public class LDAClassifier extends ParametricGenerativeClassifier {
 
     public SimpleMatrix covMatrix;
 
