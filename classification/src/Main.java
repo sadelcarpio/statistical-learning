@@ -4,7 +4,6 @@ import metrics.Metric;
 import models.discriminative.LogisticRegressionClassifier;
 import models.generative.LDAClassifier;
 import models.generative.QDAClassifier;
-import org.ejml.simple.SimpleMatrix;
 
 import java.util.Arrays;
 import java.util.Map;

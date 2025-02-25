@@ -11,6 +11,25 @@ public class QDAClassifier extends GenerativeClassifier {
     }
 
     @Override
+    public double[][] predict(SimpleMatrix data) {
+        SimpleMatrix scores = new SimpleMatrix(data.getNumRows(), nClasses);
+        SimpleMatrix meansVectors = new SimpleMatrix(means);
+        for (int i = 0; i < nClasses; i++) {
+            for (int j = 0; j < data.getNumRows(); j++) {
+                SimpleMatrix meanVector = meansVectors.getRow(i);
+                SimpleMatrix x = data.getRow(j);
+                SimpleMatrix quadTerm = x.mult(covMatrices[i].invert()).mult(x.transpose()).scale(-0.5);
+                SimpleMatrix predictorTerm = x.mult(covMatrices[i].invert()).mult(meanVector.transpose());
+                SimpleMatrix biasTerm = meanVector.mult(covMatrices[i].invert()).mult(meanVector.transpose())
+                        .scale(-0.5).plus(Math.log(covMatrices[i].determinant()) * -0.5).plus(Math.log(priors[i]));
+                SimpleMatrix score = quadTerm.plus(predictorTerm).plus(biasTerm);
+                scores.set(j, i, score.get(0, 0));
+            }
+        }
+        return scores.toArray2();
+    }
+
+    @Override
     public void calculateCovMatrix(double[][] labels, double[][] predictors) {
         int totalRows = labels.length;
         SimpleMatrix meansVectors = new SimpleMatrix(means);
@@ -35,25 +54,5 @@ public class QDAClassifier extends GenerativeClassifier {
             covMatrices[i] = meanDiff.mult(meanDiff.transpose());
             covMatrices[i] = covMatrices[i].scale(1.0 / (labelCount[i] - 1));
         }
-    }
-
-    @Override
-    public double[][] predict(SimpleMatrix data) {
-        SimpleMatrix scores = new SimpleMatrix(data.getNumRows(), nClasses);
-        SimpleMatrix meansVectors = new SimpleMatrix(means);
-        for (int i = 0; i < nClasses; i++) {
-            for (int j = 0; j < data.getNumRows(); j++) {
-                SimpleMatrix meanVector = meansVectors.getRow(i);
-                SimpleMatrix x = data.getRow(j);
-                SimpleMatrix quadTerm = x.mult(covMatrices[i].invert()).mult(x.transpose()).scale(-0.5);
-                SimpleMatrix predictorTerm = x.mult(covMatrices[i].invert()).mult(meanVector.transpose());
-                SimpleMatrix biasTerm = meanVector.mult(covMatrices[i].invert()).mult(meanVector.transpose())
-                        .scale(-0.5).plus(Math.log(covMatrices[i].determinant()) * -0.5).plus(Math.log(priors[i]));
-                SimpleMatrix score = quadTerm.plus(predictorTerm).plus(biasTerm);
-                scores.set(j, i, score.get(0, 0));
-            }
-        }
-        System.out.println(scores);
-        return scores.toArray2();
     }
 }
