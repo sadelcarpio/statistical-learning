@@ -1,6 +1,5 @@
 package models.generative;
 
-import data.Dataset;
 import org.ejml.simple.SimpleMatrix;
 
 public class LDAClassifier extends GenerativeClassifier {
