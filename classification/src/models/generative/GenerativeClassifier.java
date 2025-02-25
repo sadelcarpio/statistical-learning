@@ -4,12 +4,11 @@ import data.Dataset;
 import models.ClassificationModel;
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.Arrays;
-
 public abstract class GenerativeClassifier extends ClassificationModel {
 
-    double[] priors;
-    double[][] means;
+    public double[] priors;
+    public double[][] means;
+    public int nPredictors;
 
     public GenerativeClassifier(int nClasses) {
         priors = new double[nClasses];
@@ -17,11 +16,9 @@ public abstract class GenerativeClassifier extends ClassificationModel {
         this.nClasses = nClasses;
     }
 
-    public void fit(Dataset dataset) {
-    }
-
     public void calculatePriorsAndMeans(double[][] labels, double[][] predictors) {
         int nPredictors = predictors[0].length;
+        this.nPredictors = nPredictors;
         int numRows = labels.length;
 
         double[] labelCount = new double[nClasses];
@@ -34,6 +31,7 @@ public abstract class GenerativeClassifier extends ClassificationModel {
                     for (int k = 0; k < nPredictors; k++) {
                         means[j][k] += predictors[i][k];
                     }
+                    break;
                 }
             }
         }
@@ -45,10 +43,11 @@ public abstract class GenerativeClassifier extends ClassificationModel {
         }
     }
 
-    @Override
-    public double[][] predict(SimpleMatrix data) {
-        return null;
-    }
+    public abstract void fit(Dataset dataset);
+
+    public abstract void calculateCovMatrix(double[][] labels, double[][] predictors);
+
+    public abstract double[][] predict(SimpleMatrix data);
 
     @Override
     public void logOdds() {

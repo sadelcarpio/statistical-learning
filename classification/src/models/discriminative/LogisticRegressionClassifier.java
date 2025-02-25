@@ -1,11 +1,8 @@
 package models.discriminative;
 
 import data.Dataset;
-import metrics.Metric;
 import models.ClassificationModel;
 import org.ejml.simple.SimpleMatrix;
-
-import java.util.Map;
 
 public class LogisticRegressionClassifier extends ClassificationModel {
 
@@ -17,8 +14,7 @@ public class LogisticRegressionClassifier extends ClassificationModel {
 
     public void fit(Dataset dataset) {
         SimpleMatrix predictorsMatrix = new SimpleMatrix(dataset.getPredictors());
-        SimpleMatrix ones = new SimpleMatrix(predictorsMatrix.getNumRows(), 1);
-        ones.fill(1);
+        SimpleMatrix ones = new SimpleMatrix(predictorsMatrix.getNumRows(), 1).plus(1);
         SimpleMatrix designMatrix = ones.concatColumns(predictorsMatrix);
         beta = SimpleMatrix.random(designMatrix.getNumCols(), nClasses);
         var yTrue = new SimpleMatrix(dataset.getLabels());
@@ -36,15 +32,13 @@ public class LogisticRegressionClassifier extends ClassificationModel {
     }
 
     private SimpleMatrix softMax(SimpleMatrix matrix) {
-        SimpleMatrix ones = new SimpleMatrix(matrix.getNumCols(), matrix.getNumCols());
-        ones.fill(1);
+        SimpleMatrix ones = new SimpleMatrix(matrix.getNumCols(), matrix.getNumCols()).plus(1);
         return matrix.elementExp().elementDiv(matrix.elementExp().mult(ones));
     }
 
     @Override
     public double[][] predict(SimpleMatrix data) {
-        SimpleMatrix ones = new SimpleMatrix(data.getNumRows(), 1);
-        ones.fill(1);
+        SimpleMatrix ones = new SimpleMatrix(data.getNumRows(), 1).plus(1);
         SimpleMatrix designMatrix = ones.concatColumns(data);
         SimpleMatrix z = designMatrix.mult(beta);
         return softMax(z).toArray2();
