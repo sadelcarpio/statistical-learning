@@ -8,6 +8,7 @@ public abstract class GenerativeClassifier extends ClassificationModel {
 
     public double[] priors;
     public double[][] means;
+    public double[] labelCount;
     public int nPredictors;
 
     public GenerativeClassifier(int nClasses) {
@@ -21,7 +22,7 @@ public abstract class GenerativeClassifier extends ClassificationModel {
         this.nPredictors = nPredictors;
         int numRows = labels.length;
 
-        double[] labelCount = new double[nClasses];
+        labelCount = new double[nClasses];
         means = new double[nClasses][nPredictors];
 
         for (int i = 0; i < numRows; i++) {
@@ -43,7 +44,12 @@ public abstract class GenerativeClassifier extends ClassificationModel {
         }
     }
 
-    public abstract void fit(Dataset dataset);
+    public void fit(Dataset dataset) {
+        double[][] labels = dataset.getLabels();
+        double[][] predictors = dataset.getPredictors();
+        calculatePriorsAndMeans(labels, predictors);
+        calculateCovMatrix(labels, predictors);
+    }
 
     public abstract void calculateCovMatrix(double[][] labels, double[][] predictors);
 

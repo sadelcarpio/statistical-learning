@@ -11,14 +11,6 @@ public class LDAClassifier extends GenerativeClassifier {
         super(nClasses);
     }
 
-    @Override
-    public void fit(Dataset dataset) {
-        double[][] labels = dataset.getLabels();
-        double[][] predictors = dataset.getPredictors();
-        calculatePriorsAndMeans(labels, predictors);
-        calculateCovMatrix(labels, predictors);
-    }
-
     public double[][] predict(SimpleMatrix data) {
         SimpleMatrix scores = new SimpleMatrix(data.getNumRows(), nClasses);
         SimpleMatrix meansVectors = new SimpleMatrix(means);
