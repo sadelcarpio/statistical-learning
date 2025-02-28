@@ -1,25 +1,27 @@
-package models.generative.parametric;
+package models.generative;
 
 import data.Dataset;
 import models.ClassificationModel;
 import org.ejml.simple.SimpleMatrix;
 
-public abstract class ParametricGenerativeClassifier extends ClassificationModel {
+public abstract class GenerativeClassifier extends ClassificationModel {
 
     public double[] priors;
     public double[][] means;
     public double[] labelCount;
+    public SimpleMatrix[] classPredictor;
+    public int totalRows;
     public int nPredictors;
 
-    public ParametricGenerativeClassifier(int nClasses) {
+    public GenerativeClassifier(int nClasses) {
         priors = new double[nClasses];
         means = new double[nClasses][];
+        classPredictor = new SimpleMatrix[nClasses];
         this.nClasses = nClasses;
     }
 
     public void calculatePriorsAndMeans(double[][] labels, double[][] predictors) {
-        int nPredictors = predictors[0].length;
-        this.nPredictors = nPredictors;
+        this.nPredictors = predictors[0].length;
         int numRows = labels.length;
 
         labelCount = new double[nClasses];
@@ -51,12 +53,23 @@ public abstract class ParametricGenerativeClassifier extends ClassificationModel
         calculateCovMatrix(labels, predictors);
     }
 
+    protected void getClassPredictors(double[][] labels, double[][] predictors) {
+        totalRows = labels.length;
+        for (int i = 0; i < totalRows; i++) {
+            for (int j = 0; j < nClasses; j++) {
+                if (labels[i][j] != 0) {
+                    if (classPredictor[j] == null) {
+                        classPredictor[j] = new SimpleMatrix(predictors[i]);
+                    } else {
+                        classPredictor[j] = classPredictor[j].concatColumns(new SimpleMatrix(predictors[i]));
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     public abstract void calculateCovMatrix(double[][] labels, double[][] predictors);
 
     public abstract double[][] predict(SimpleMatrix data);
-
-    @Override
-    public void logOdds() {
-
-    }
 }

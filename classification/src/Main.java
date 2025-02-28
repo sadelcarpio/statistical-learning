@@ -2,8 +2,9 @@ import data.Dataset;
 import metrics.Accuracy;
 import metrics.Metric;
 import models.discriminative.LogisticRegressionClassifier;
-import models.generative.parametric.LDAClassifier;
-import models.generative.parametric.QDAClassifier;
+import models.generative.LDAClassifier;
+import models.generative.GaussianNaiveBayes;
+import models.generative.QDAClassifier;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -27,5 +28,9 @@ public class Main {
         qda.fit(dataset);
         Map<String, Double> QDAMetrics = qda.evaluate(dataset, metrics);
         System.out.println(QDAMetrics);
+        GaussianNaiveBayes naiveBayes = new GaussianNaiveBayes(dataset.numClasses);
+        naiveBayes.fit(dataset);
+        Map<String, Double> naiveBayesMetrics = naiveBayes.evaluate(dataset, metrics);
+        System.out.println(naiveBayesMetrics);
     }
 }

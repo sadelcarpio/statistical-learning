@@ -43,9 +43,4 @@ public class LogisticRegressionClassifier extends ClassificationModel {
         SimpleMatrix z = designMatrix.mult(beta);
         return softMax(z).toArray2();
     }
-
-    @Override
-    public void logOdds() {
-
-    }
 }

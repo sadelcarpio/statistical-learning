@@ -1,8 +1,8 @@
-package models.generative.parametric;
+package models.generative;
 
 import org.ejml.simple.SimpleMatrix;
 
-public class QDAClassifier extends ParametricGenerativeClassifier {
+public class QDAClassifier extends GenerativeClassifier {
 
     public SimpleMatrix[] covMatrices;
 
@@ -12,10 +12,11 @@ public class QDAClassifier extends ParametricGenerativeClassifier {
 
     @Override
     public double[][] predict(SimpleMatrix data) {
-        SimpleMatrix scores = new SimpleMatrix(data.getNumRows(), nClasses);
+        int totalRowsInference = data.getNumRows();
+        SimpleMatrix scores = new SimpleMatrix(totalRowsInference, nClasses);
         SimpleMatrix meansVectors = new SimpleMatrix(means);
         for (int i = 0; i < nClasses; i++) {
-            for (int j = 0; j < data.getNumRows(); j++) {
+            for (int j = 0; j < totalRowsInference; j++) {
                 SimpleMatrix meanVector = meansVectors.getRow(i);
                 SimpleMatrix x = data.getRow(j);
                 SimpleMatrix quadTerm = x.mult(covMatrices[i].invert()).mult(x.transpose()).scale(-0.5);
@@ -31,21 +32,8 @@ public class QDAClassifier extends ParametricGenerativeClassifier {
 
     @Override
     public void calculateCovMatrix(double[][] labels, double[][] predictors) {
-        int totalRows = labels.length;
+        getClassPredictors(labels, predictors);
         SimpleMatrix meansVectors = new SimpleMatrix(means);
-        SimpleMatrix[] classPredictor = new SimpleMatrix[nClasses];
-        for (int i = 0; i < totalRows; i++) {
-            for (int j = 0; j < nClasses; j++) {
-                if (labels[i][j] != 0) {
-                    if (classPredictor[j] == null) {
-                        classPredictor[j] = new SimpleMatrix(predictors[i]);
-                    } else {
-                        classPredictor[j] = classPredictor[j].concatColumns(new SimpleMatrix(predictors[i]));
-                    }
-                    break;
-                }
-            }
-        }
         covMatrices = new SimpleMatrix[nClasses];
         for (int i = 0; i < nClasses; i++) {
             SimpleMatrix ones = new SimpleMatrix(classPredictor[i].getNumCols(), 1).plus(1);

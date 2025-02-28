@@ -22,6 +22,4 @@ public abstract class ClassificationModel {
     }
 
     public abstract double[][] predict(SimpleMatrix data);
-
-    public abstract void logOdds();
 }
