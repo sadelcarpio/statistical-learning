@@ -7,6 +7,13 @@ pub struct Dataset {
 }
 
 impl Dataset {
+    /// Reads the dataset from a csv file populating the values of x and y, being y the last column
+    ///
+    /// # Arguments
+    ///
+    /// * `filename`: Path to the csv file
+    ///
+    /// returns: Result<Dataset, Box<dyn Error, Global>>
     pub fn from_csv(filename: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let df = CsvReadOptions::default()
             .try_into_reader_with_file_path(Some(filename.into()))
