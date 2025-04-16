@@ -4,12 +4,19 @@ import org.ejml.simple.SimpleMatrix;
 
 public class QDAClassifier extends GenerativeClassifier {
 
+    /**
+     * Parameters of the model indicating the covariance between predictors on each class.
+     */
     public SimpleMatrix[] covMatrices;
 
     public QDAClassifier(int nClasses) {
         super(nClasses);
     }
 
+    /**
+     * @param data predictors matrix of shape {@code [n][p]}
+     * @return labels matrix on which the maximum is the most likely class.
+     */
     @Override
     public double[][] predict(SimpleMatrix data) {
         int totalRowsInference = data.getNumRows();
@@ -30,6 +37,11 @@ public class QDAClassifier extends GenerativeClassifier {
         return scores.toArray2();
     }
 
+    /**
+     * Calculates a covariance matrix per class.
+     * @param labels one-hot encoded labels
+     * @param predictors predictors numeric predictors
+     */
     @Override
     public void calculateCovMatrix(double[][] labels, double[][] predictors) {
         getClassPredictors(labels, predictors);

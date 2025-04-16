@@ -14,6 +14,12 @@ public class GaussianNaiveBayes extends GenerativeClassifier {
         return (Math.exp(-0.5 * Math.pow((x - mu), 2) / variance)) / (Math.sqrt(2 * Math.PI * variance));
     }
 
+    /**
+     * Calculates the Covariance Matrix assuming all predictors are independent (covariance matrix is diagonal),
+     * resulting in a diagonal matrix per class
+     * @param labels one-hot encoded labels
+     * @param predictors numeric predictors
+     */
     @Override
     public void calculateCovMatrix(double[][] labels, double[][] predictors) {
         getClassPredictors(labels, predictors);
@@ -25,6 +31,10 @@ public class GaussianNaiveBayes extends GenerativeClassifier {
         }
     }
 
+    /**
+     * @param data predictors matrix of shape {@code [n][p]}
+     * @return labels matrix, each row containing the probabilities for a given example, of belonging to a class.
+     */
     @Override
     public double[][] predict(SimpleMatrix data) {
         int totalRowsInference = data.getNumRows();

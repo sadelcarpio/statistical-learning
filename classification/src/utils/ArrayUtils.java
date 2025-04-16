@@ -3,6 +3,11 @@ package utils;
 import java.util.ArrayList;
 
 public class ArrayUtils {
+    /**
+     * Returns the index of the maximum element of an array of double
+     * @param q array of values
+     * @return index of the maximum element
+     */
     public static ArrayList<Integer> getArgmax(double[] q) {
         ArrayList<Integer> argmax_a = new ArrayList<>();
         int k = q.length;

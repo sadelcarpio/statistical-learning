@@ -11,9 +11,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class for classification dataset.
+ */
 public class Dataset {
 
+    /**
+     * Array of predictors of shape {@code [n][p]}, where {@code predictors[i][j]} is the
+     * {@code j_th} predictor value for the {@code i_th} example.
+     * All must be numeric values (double)
+     */
     private final double[][] predictors;
+    /**
+     * Array of labels of shape {@code [n][K]}, where {@code labels[i][k]} is the {@code k_th} class probability (or
+     * logit) for the {@code i_th} example.
+     */
     private final double[][] labels;
     public int numClasses;
     public int numPredictors;
@@ -26,6 +38,10 @@ public class Dataset {
         return labels;
     }
 
+    /**
+     * @param path Path to .csv file (without headers) containing the values of predictors, and label in the last column
+     *             (as an integer)
+     */
     public Dataset(String path) {
         FileReader fr;
         try {
@@ -57,11 +73,10 @@ public class Dataset {
             predictors[i] = new double[row.length - 1];
             labels[i] = new double[numClasses];
             for (int j = 0; j < row.length; j++) {
-                if ( j == row.length - 1) {
+                if (j == row.length - 1) {
                     int label = Integer.parseInt(row[j]);
                     labels[i][label] = 1;
-                }
-                else {
+                } else {
                     predictors[i][j] = Float.parseFloat(row[j]);
                 }
             }

@@ -6,12 +6,21 @@ import org.ejml.simple.SimpleMatrix;
 
 public class LogisticRegressionClassifier extends ClassificationModel {
 
+    /**
+     * Matrix that contain the parameters of the model. shape {@code [1 + p][nClasses]}
+     */
     public SimpleMatrix beta;
 
     public LogisticRegressionClassifier(int nClasses) {
         this.nClasses = nClasses;
     }
 
+    /**
+     * Fits the Logistic Regression Model, updating the {@code beta} matrix via gradient descent.
+     * creates a {@code designMatrix} that is of shape {@code [n][1 + p]} (predictors + bias term)
+     * @param dataset {@link Dataset} object, containing predictors and labels
+     */
+    @Override
     public void fit(Dataset dataset) {
         SimpleMatrix predictorsMatrix = new SimpleMatrix(dataset.getPredictors());
         SimpleMatrix ones = new SimpleMatrix(predictorsMatrix.getNumRows(), 1).plus(1);
@@ -21,6 +30,13 @@ public class LogisticRegressionClassifier extends ClassificationModel {
         optimize(designMatrix, yTrue);
     }
 
+    /**
+     * Updates the instance variable {@link LogisticRegressionClassifier#beta} via gradient descent, using a fixed number
+     * of steps
+     * @param designMatrix matrix of shape {@code [n][1 + p]} containing the predictors and bias
+     * @param yTrue matrix of shape {@code [n][K]} containing the one hot encoded labels to compare with the model's outputted
+     *              probabilities
+     */
     private void optimize(SimpleMatrix designMatrix, SimpleMatrix yTrue) {
         for (int i = 0; i < 1000; i++) {
             SimpleMatrix z = designMatrix.mult(beta);

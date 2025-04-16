@@ -2,6 +2,9 @@ package metrics;
 
 import utils.ArrayUtils;
 
+/**
+ * Class that implements Accuracy metric {@code num_correct_preds / total_preds}
+ */
 public class Accuracy implements Metric {
     public double calculate(double[][] yTrue, double[][] yHat) {
        int totalPreds = yTrue.length;
