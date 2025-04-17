@@ -1,0 +1,10 @@
+[package]
+name = "glms"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ndarray = "0.15.6"
+ndarray-rand = "0.14.0"
+ndarray-linalg = { version = "0.16.0", features = ["intel-mkl-static"]}
+polars = { version = "0.40.0", features = ["ndarray"] }
