@@ -13,7 +13,7 @@ fn main() {
         .unwrap();
     let predictors: DataFrame = df.select(["feat1", "feat2"]).unwrap();
     let response: DataFrame = df.select(["y"]).unwrap();
-    let optimizer = GradientDescent::new(0.001);
+    let optimizer = GradientDescent::new(0.01);
     let mut model = PoissonRegressor::default().with_optimizer(Box::new(optimizer));
     let metrics = model.fit(&predictors, &response, 1000);
     println!("Metrics: {:?}", metrics);
