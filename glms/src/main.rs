@@ -1,13 +1,13 @@
 mod optimizer;
 mod poisson_glm;
 
+use crate::optimizer::GradientDescent;
 use crate::poisson_glm::PoissonRegressor;
 use polars::prelude::*;
-use crate::optimizer::GradientDescent;
 
 fn main() {
     let df: DataFrame = CsvReadOptions::default()
-        .try_into_reader_with_file_path(Some("data/path.csv".into()))
+        .try_into_reader_with_file_path(Some("data/dummy_data.csv".into()))
         .unwrap()
         .finish()
         .unwrap();
@@ -15,5 +15,13 @@ fn main() {
     let response: DataFrame = df.select(["y"]).unwrap();
     let optimizer = GradientDescent::new(0.001);
     let mut model = PoissonRegressor::default().with_optimizer(Box::new(optimizer));
-    model.fit(predictors, response, 100);
+    let metrics = model.fit(&predictors, &response, 1000);
+    println!("Metrics: {:?}", metrics);
+    // Prediction on train data:
+    let predictions = model.predict(&predictors);
+    println!("Ground Truth: {:?}", response);
+    println!("Predictions: {:?}", predictions);
+    let metrics = model.evaluate(&predictors, &response);
+    println!("Metrics: {:?}", metrics);
+    println!("Trained params: {:?}", model.params.unwrap());
 }
